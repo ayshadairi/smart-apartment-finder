@@ -12,6 +12,9 @@ export default function ApartmentCard({ apartment }) {
         <p className="text-gray-400 text-sm mb-1">{apartment.location}</p>
         <p className="text-gray-400 text-sm mb-3">{apartment.bedrooms} Bedrooms</p>
         <p className="text-gray-300 text-sm mb-4">{apartment.description}</p>
+        <button className="w-full bg-gray-700 hover:bg-blue-600 text-white py-2 rounded-lg transition font-medium">
+          View Details
+        </button>
       </div>
     </div>
   );
