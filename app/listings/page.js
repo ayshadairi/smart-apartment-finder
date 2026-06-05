@@ -75,11 +75,13 @@ export default function Listings() {
           Apartment Listings
         </h1>
         <p className="text-gray-400 mt-2">Browse available apartments in your area</p>
+        <p className="text-gray-500 text-sm mt-1">Found {apartments.length} apartments</p>
       </div>
       
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="bg-gray-800 rounded-xl p-8 text-center border border-gray-700 col-span-full">
-        </div>
+        {apartments.map((apartment) => (
+          <ApartmentCard key={apartment.id} apartment={apartment} />
+        ))}
       </div>
     </div>
   );
