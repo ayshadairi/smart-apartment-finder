@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import ApartmentCard from "@/app/components/ApartmentCard";
 
 export default function Listings() {
   const[apartments, setApartments] = useState([]);
@@ -43,6 +44,29 @@ export default function Listings() {
       </div>
     );
   }
+
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            Apartment Listings
+          </h1>
+          <p className="text-gray-400 mt-2">Browse available apartments in your area</p>
+        </div>
+        <div className="bg-red-900/30 border border-red-700 rounded-lg p-4 text-center">
+        <p className="text-red-300">Error loading apartments: {error}
+        </p>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="mt-3 bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+        >
+          Try Again
+        </button>
+      </div>
+    </div>
+  );
+}
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
