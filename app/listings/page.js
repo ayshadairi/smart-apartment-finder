@@ -1,4 +1,12 @@
+"use client";
+import { useState, useEffect } from "react";
+
 export default function Listings() {
+  const[apartments, setApartments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  cont [error, setError] = useState(null);
+
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
@@ -10,7 +18,6 @@ export default function Listings() {
       
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="bg-gray-800 rounded-xl p-8 text-center border border-gray-700 col-span-full">
-          <p className="text-gray-400">Loading apartment listings...</p>
         </div>
       </div>
     </div>
