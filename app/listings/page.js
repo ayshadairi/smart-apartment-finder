@@ -3,7 +3,14 @@ import { getAllApartments } from "@/app/actions";
 import Link from "next/link";
 
 export default async function Listings() {
-    const apartments = await getAllApartments();
+    let apartments = [];
+    let error = null;
+
+    try {
+        apartments = await getAllApartments();
+    } catch (err) {
+        error = err.message || "Failed to load apartments";
+    }
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -13,7 +20,7 @@ export default async function Listings() {
                         Apartment Listings
                     </h1>
                     <p className="text-gray-400 mt-1">Browse available apartments in your area</p>
-                    <p className="text-gray-500 text-sm mt-1">Found {apartments.length} apartments</p>
+                    {!error && <p className="text-gray-500 text-sm mt-1">Found {apartments.length} apartments</p>}
                 </div>
                 
                 <Link 
@@ -25,17 +32,24 @@ export default async function Listings() {
                 </Link>
             </div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {apartments.length === 0 ? (
-                    <div className="col-span-full text-center py-12 bg-gray-800/50 rounded-xl border border-gray-700">
-                        <p className="text-gray-400">No apartments found. Add your first listing!</p>
-                    </div>
-                ) : (
-                    apartments.map((apartment) => (
-                        <ApartmentCard key={apartment._id} apartment={apartment} />
-                    ))
-                )}
-            </div>
+            {error ? (
+                <div className="bg-red-900/30 border border-red-700 rounded-lg p-6 text-center">
+                    <p className="text-red-300">Error loading apartments: {error}</p>
+                    <p className="text-gray-400 text-sm mt-2">Please try again later.</p>
+                </div>
+            ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {apartments.length === 0 ? (
+                        <div className="col-span-full text-center py-12 bg-gray-800/50 rounded-xl border border-gray-700">
+                            <p className="text-gray-400">No apartments found. Add your first listing!</p>
+                        </div>
+                    ) : (
+                        apartments.map((apartment) => (
+                            <ApartmentCard key={apartment._id} apartment={apartment} />
+                        ))
+                    )}
+                </div>
+            )}
         </div>
     );
 }
