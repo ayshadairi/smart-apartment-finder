@@ -1,6 +1,8 @@
+import { addApartment } from "@/app/actions";
+
 export default function NewApartment() {
     return (
-        <form action="/api/add" method="POST">
+        <form action={addApartment}>
             <input type="text" name="title" placeholder="Title" />
             <input type="text" name="price" placeholder="Price" />
             <input type="text" name="location" placeholder="Location" />
