@@ -1,7 +1,18 @@
 "use server";
+
 import { connectToDB } from "@/app/api/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+
+export async function getAllApartments() {
+    const { db } = await connectToDB();
+    const apartments = await db.collection("apartments").find({}).toArray();
+    
+    return apartments.map(apt => ({
+        ...apt,
+        _id: apt._id.toString()
+    }));
+}
 
 export async function addApartment(formData) {
     const { db } = await connectToDB();
