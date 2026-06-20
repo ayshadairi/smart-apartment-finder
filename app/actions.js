@@ -53,3 +53,12 @@ export async function updateApartment(id, formData) {
     revalidatePath("/listings");
     redirect("/listings");
 }
+
+export async function deleteApartment(id) {
+    const { db } = await connectToDB();
+    const { ObjectId } = require('mongodb');
+    
+    await db.collection("apartments").deleteOne({ _id: new ObjectId(id) });
+    
+    revalidatePath("/listings");
+}
