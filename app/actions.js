@@ -62,3 +62,19 @@ export async function deleteApartment(id) {
     
     revalidatePath("/listings");
 }
+
+export async function getApartmentById(id) {
+    const { db } = await connectToDB();
+    const { ObjectId } = require('mongodb');
+    
+    const apartment = await db.collection("apartments").findOne({ _id: new ObjectId(id) });
+    
+    if (!apartment) {
+        throw new Error("Apartment not found");
+    }
+    
+    return {
+        ...apartment,
+        _id: apartment._id.toString()
+    };
+}
