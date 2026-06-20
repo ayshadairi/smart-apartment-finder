@@ -45,11 +45,12 @@ export default function NewApartment() {
                     <label className="block text-sm font-medium text-gray-300 mb-1">Bedrooms</label>
                     <select
                         name="bedrooms"
+                        defaultValue="2"
                         className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                     >
                         <option value="0">Studio</option>
                         <option value="1">1 Bedroom</option>
-                        <option value="2" selected>2 Bedrooms</option>
+                        <option value="2">2 Bedrooms</option>
                         <option value="3">3 Bedrooms</option>
                         <option value="4">4+ Bedrooms</option>
                     </select>
