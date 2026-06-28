@@ -64,3 +64,39 @@ export async function PUT(request, { params }) {
         );
     }
 }
+export async function DELETE(request, { params }) {
+    try {
+        const { db } = await connectToDB();
+        const { id } = await params;
+        
+        if (!ObjectId.isValid(id)) {
+            return NextResponse.json(
+                { error: "Invalid apartment ID" },
+                { status: 400 }
+            );
+        }
+        
+        const result = await db.collection("apartments").deleteOne(
+            { _id: new ObjectId(id) }
+        );
+        
+        if (result.deletedCount === 0) {
+            return NextResponse.json(
+                { error: "Apartment not found" },
+                { status: 404 }
+            );
+        }
+        
+        return NextResponse.json({
+            message: "Apartment deleted successfully",
+            id: id
+        });
+        
+    } catch (error) {
+        console.error("DELETE /api/apartments/[id] error:", error);
+        return NextResponse.json(
+            { error: "Failed to delete apartment", details: error.message },
+            { status: 500 }
+        );
+    }
+}
