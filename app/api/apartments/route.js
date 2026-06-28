@@ -1,20 +1,33 @@
 import { connectToDB } from "@/app/api/db";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request) {
     try {
         const { db } = await connectToDB();
-        const apartments = await db.collection("apartments").find({}).toArray();
-
+        const { searchParams } = new URL(request.url);
+        const location = searchParams.get('location');
+        
+        let filter = {};
+        if (location) {
+            filter.location = { $regex: location, $options: 'i' };
+        }
+        
+        const apartments = await db.collection("apartments")
+            .find(filter)
+            .sort({ createdAt: -1 })
+            .toArray();
+        
         const formattedApartments = apartments.map(apt => ({
             ...apt,
-            _id: apt._id.toString()
+            _id: apt._id.toString(),
+            createdAt: apt.createdAt?.toISOString()
         }));
         
         return NextResponse.json(formattedApartments);
     } catch (error) {
+        console.error("GET /api/apartments error:", error);
         return NextResponse.json(
-            { error: "Failed to fetch apartments", message: error.message },
+            { error: "Failed to fetch apartments", details: error.message },
             { status: 500 }
         );
     }
