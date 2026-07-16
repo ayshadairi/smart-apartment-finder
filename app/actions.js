@@ -1,6 +1,6 @@
 "use server";
 
-import { connectToDB } from "@/app/api/db";
+import { connectToDB } from "@/lib/mongodb";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
