@@ -1,7 +1,5 @@
 import "./globals.css";
-import Navbar from "@/app/components/navbar";
-import Footer from "@/app/components/footer";
-import { SessionProvider } from "next-auth/react";
+import ClientLayout from "./ClientLayout";
 
 export const metadata = {
     title: "Smart Apartment Finder",
@@ -12,13 +10,7 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <body className="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
-                <SessionProvider>
-                    <Navbar />
-                    <main className="flex-grow">
-                        {children}
-                    </main>
-                    <Footer />
-                </SessionProvider>
+                <ClientLayout>{children}</ClientLayout>
             </body>
         </html>
     );

@@ -22,6 +22,7 @@ export const authOptions = {
             return session;
         },
     },
+    debug: process.env.NODE_ENV === "development",
 };
 
 export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);
