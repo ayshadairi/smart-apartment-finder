@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
-import clientPromise from "@/lib/mongodb";
+import clientPromise from "./lib/mongodb";
 
 export const authOptions = {
     providers: [
@@ -22,7 +22,10 @@ export const authOptions = {
             return session;
         },
     },
-    debug: process.env.NODE_ENV === "development",
 };
 
-export const { handlers, signIn, signOut, auth } = NextAuth(authOptions);
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };
+export const auth = handler.auth;
+export const { handlers, signIn, signOut } = handler;
