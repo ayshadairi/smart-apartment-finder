@@ -6,7 +6,8 @@ export async function POST(request) {
         const body = await request.json();
         const { city, budget, bedrooms, lifestyle } = body;
         
-        // Validate required fields
+        console.log("📥 Received request:", { city, budget, bedrooms, lifestyle });
+        
         if (!city) {
             return NextResponse.json(
                 { error: "City is required" },
@@ -29,7 +30,7 @@ export async function POST(request) {
         });
         
     } catch (error) {
-        console.error("Recommendation API error:", error);
+        console.error("❌ Recommendation API error:", error);
         return NextResponse.json(
             { 
                 error: "Failed to generate recommendations", 
