@@ -61,6 +61,17 @@ export default async function EditApartment({ params }) {
                 </div>
                 
                 <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Image URL</label>
+                    <input
+                        type="url"
+                        name="image"
+                        defaultValue={apartment.image || ""}
+                        placeholder="https://example.com/apartment-image.jpg"
+                        className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    />
+                </div>
+                
+                <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
                     <textarea
                         name="description"

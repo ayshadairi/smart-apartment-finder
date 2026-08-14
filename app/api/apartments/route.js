@@ -40,7 +40,7 @@ export async function POST(request) {
         const { db } = await connectToDB();
         const body = await request.json();
         
-        const { title, price, location, bedrooms, description, source } = body;
+        const { title, price, location, bedrooms, description, source, image } = body;
         
         const session = await getServerSession(authOptions);
         
@@ -63,6 +63,7 @@ export async function POST(request) {
             location: location.trim(),
             bedrooms: parseInt(bedrooms) || 0,
             description: description?.trim() || "",
+            image: image || "",
             source: source || "Manual Entry",
             createdAt: new Date()
         };

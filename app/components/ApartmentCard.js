@@ -19,9 +19,23 @@ export default function ApartmentCard({ apartment }) {
 
     return (
         <div className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-blue-500 transition-all hover:transform hover:scale-[1.02] duration-300">
-            <div className="h-48 bg-gray-700 flex items-center justify-center">
-                <span className="text-gray-500 text-sm">photo placeholder</span>
+            {/* Image or Placeholder */}
+            {apartment.image ? (
+                <img 
+                    src={apartment.image} 
+                    alt={apartment.title}
+                    className="w-full h-48 object-cover"
+                    onError={(e) => {
+                        // If image fails to load, show placeholder
+                        e.target.style.display = 'none';
+                        e.target.nextElementSibling.style.display = 'flex';
+                    }}
+                />
+            ) : null}
+            <div className="h-48 bg-gray-700 flex items-center justify-center" style={{ display: apartment.image ? 'none' : 'flex' }}>
+                <span className="text-gray-500 text-sm">📷 No Image</span>
             </div>
+            
             <div className="p-5">
                 <div className="flex justify-between items-start mb-2">
                     <h3 className="text-xl font-semibold text-white">{apartment.title}</h3>
@@ -30,6 +44,12 @@ export default function ApartmentCard({ apartment }) {
                 <p className="text-gray-400 text-sm mb-1">{apartment.location}</p>
                 <p className="text-gray-400 text-sm mb-3">{apartment.bedrooms} Bedrooms</p>
                 <p className="text-gray-300 text-sm mb-4">{apartment.description}</p>
+                
+                {apartment.userName && (
+                    <p className="text-gray-500 text-xs mb-4">
+                        Listed by: {apartment.userName}
+                    </p>
+                )}
                 
                 <div className="flex gap-2">
                     <Link 

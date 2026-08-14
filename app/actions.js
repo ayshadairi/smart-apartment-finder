@@ -25,6 +25,7 @@ export async function getMyApartments() {
         createdAt: apt.createdAt?.toISOString()
     }));
 }
+
 export async function addApartment(formData) {
     const session = await getServerSession(authOptions);
     
@@ -40,6 +41,7 @@ export async function addApartment(formData) {
         location: formData.get("location"),
         bedrooms: parseInt(formData.get("bedrooms")) || 0,
         description: formData.get("description"),
+        image: formData.get("image") || "",
         userId: session.user.id,
         userName: session.user.name,
         userEmail: session.user.email,
@@ -51,6 +53,7 @@ export async function addApartment(formData) {
     revalidatePath("/listings");
     redirect("/listings");
 }
+
 export async function updateApartment(id, formData) {
     const session = await getServerSession(authOptions);
     
@@ -76,6 +79,7 @@ export async function updateApartment(id, formData) {
         location: formData.get("location"),
         bedrooms: parseInt(formData.get("bedrooms")) || 0,
         description: formData.get("description"),
+        image: formData.get("image") || "",
         updatedAt: new Date()
     };
     
@@ -87,6 +91,7 @@ export async function updateApartment(id, formData) {
     revalidatePath("/listings");
     redirect("/listings");
 }
+
 export async function deleteApartment(id) {
     const session = await getServerSession(authOptions);
     
@@ -110,6 +115,7 @@ export async function deleteApartment(id) {
     
     revalidatePath("/listings");
 }
+
 export async function getApartmentById(id) {
     const { db } = await connectToDB();
     const { ObjectId } = require('mongodb');

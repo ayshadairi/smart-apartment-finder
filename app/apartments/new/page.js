@@ -12,6 +12,7 @@ export default function NewApartment() {
     const [price, setPrice] = useState("");
     const [location, setLocation] = useState("");
     const [bedrooms, setBedrooms] = useState("2");
+    const [image, setImage] = useState("");
     const [features, setFeatures] = useState("");
     const [audience, setAudience] = useState("");
     const [notes, setNotes] = useState("");
@@ -75,6 +76,7 @@ export default function NewApartment() {
         formData.append("location", location);
         formData.append("bedrooms", bedrooms);
         formData.append("description", description);
+        formData.append("image", image);
         formData.append("features", keyFeatures.join(", "));
         formData.append("vibe", vibe);
         formData.append("targetAudience", targetAudience);
@@ -89,6 +91,7 @@ export default function NewApartment() {
                     location,
                     bedrooms: parseInt(bedrooms),
                     description: description || "No description provided",
+                    image: image || "",
                 }),
             });
 
@@ -174,16 +177,27 @@ export default function NewApartment() {
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Bedrooms</label>
                     <select
-                        value={bedrooms}
-                        onChange={(e) => setBedrooms(e.target.value)}
+                        name="bedrooms"
+                        defaultValue="2"
                         className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                     >
                         <option value="0">Studio</option>
                         <option value="1">1 Bedroom</option>
-                        <option value="2" selected>2 Bedrooms</option>
+                        <option value="2">2 Bedrooms</option>
                         <option value="3">3 Bedrooms</option>
                         <option value="4">4+ Bedrooms</option>
                     </select>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Image URL (optional)</label>
+                    <input
+                        type="url"
+                        value={image}
+                        onChange={(e) => setImage(e.target.value)}
+                        placeholder="https://example.com/apartment-image.jpg"
+                        className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    />
                 </div>
 
                 <div>
