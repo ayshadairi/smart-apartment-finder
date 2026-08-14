@@ -67,13 +67,13 @@ export default function Recommendations() {
 
                     <div>
                         <label className="block text-sm font-medium text-gray-300 mb-1">
-                            Monthly Budget
+                            Monthly Budget (CAD)
                         </label>
                         <input
                             type="text"
                             value={budget}
                             onChange={(e) => setBudget(e.target.value)}
-                            placeholder="e.g., $1500 - $2500"
+                            placeholder="e.g., 1500"
                             className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                         />
                     </div>
@@ -141,47 +141,79 @@ export default function Recommendations() {
 
             {recommendations && (
                 <div className="space-y-6">
-                    <h2 className="text-2xl font-semibold text-center mb-6">
-                        🎯 Your Matches
-                    </h2>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {recommendations.map((apt, index) => (
-                            <div
-                                key={index}
-                                className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-blue-500 transition"
-                            >
-                                <div className="p-5">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <h3 className="text-xl font-semibold text-white">
-                                            {apt.title}
-                                        </h3>
-                                        <span className="text-blue-400 font-bold">
-                                            {apt.price}
-                                        </span>
-                                    </div>
-                                    <p className="text-gray-400 text-sm mb-1">
-                                        📍 {apt.location}
+                    {(() => {
+                        const withinBudget = recommendations.filter(apt => apt.withinBudget === true);
+                        const overBudget = recommendations.filter(apt => apt.withinBudget === false);
+                        
+                        if (withinBudget.length === 0 && recommendations.length > 0) {
+                            return (
+                                <div className="bg-yellow-900/30 border border-yellow-700 rounded-lg p-6 text-center">
+                                    <p className="text-yellow-300 text-lg font-semibold">No apartments found within your budget</p>
+                                    <p className="text-yellow-200/70 mt-2">
+                                        We found {recommendations.length} apartments in {city}, but they exceed your budget of ${budget} CAD.
+                                        Try increasing your budget or searching in a different city.
                                     </p>
-                                    <p className="text-gray-400 text-sm mb-3">
-                                        🛏️ {apt.bedrooms} Bedrooms
-                                    </p>
-                                    <p className="text-gray-300 text-sm mb-3">
-                                        {apt.description}
-                                    </p>
-                                    <div className="bg-blue-600/20 border border-blue-500/30 rounded-lg p-3 mb-3">
-                                        <p className="text-blue-300 text-sm font-medium">
-                                            💡 {apt.reason}
-                                        </p>
-                                    </div>
-                                    <div className="bg-gray-700/50 rounded-lg p-3">
-                                        <p className="text-gray-400 text-sm">
-                                            📊 {apt.neighborhoodInsight}
-                                        </p>
-                                    </div>
+                                    {overBudget.length > 0 && (
+                                        <div className="mt-4 text-left">
+                                            <p className="text-gray-400 text-sm mb-2">Apartments found (over budget):</p>
+                                            {overBudget.map((apt, idx) => (
+                                                <div key={idx} className="bg-gray-800/50 p-3 rounded mb-2 border border-gray-700">
+                                                    <p className="text-white text-sm">{apt.title}</p>
+                                                    <p className="text-gray-400 text-sm">{apt.price}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            );
+                        }
+                        
+                        return (
+                            <>
+                                <h2 className="text-2xl font-semibold text-center mb-6">
+                                    🎯 Your Matches ({withinBudget.length} of {recommendations.length} within budget)
+                                </h2>
+                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {withinBudget.map((apt, index) => (
+                                        <div
+                                            key={index}
+                                            className="bg-gray-800 rounded-xl overflow-hidden border border-green-500/30 hover:border-green-500 transition"
+                                        >
+                                            <div className="p-5">
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <h3 className="text-xl font-semibold text-white">
+                                                        {apt.title}
+                                                    </h3>
+                                                    <span className="text-green-400 font-bold">
+                                                        {apt.price}
+                                                    </span>
+                                                </div>
+                                                <p className="text-gray-400 text-sm mb-1">
+                                                    📍 {apt.location}
+                                                </p>
+                                                <p className="text-gray-400 text-sm mb-3">
+                                                    🛏️ {apt.bedrooms} Bedrooms
+                                                </p>
+                                                <p className="text-gray-300 text-sm mb-3">
+                                                    {apt.description}
+                                                </p>
+                                                <div className="bg-blue-600/20 border border-blue-500/30 rounded-lg p-3 mb-3">
+                                                    <p className="text-blue-300 text-sm font-medium">
+                                                        💡 {apt.reason}
+                                                    </p>
+                                                </div>
+                                                <div className="bg-gray-700/50 rounded-lg p-3">
+                                                    <p className="text-gray-400 text-sm">
+                                                        📊 {apt.neighborhoodInsight}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        );
+                    })()}
                 </div>
             )}
         </div>
