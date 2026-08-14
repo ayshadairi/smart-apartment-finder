@@ -1,20 +1,48 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Recommendations() {
+    const { data: session, status } = useSession();
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const [city, setCity] = useState("");
     const [budget, setBudget] = useState("");
     const [bedrooms, setBedrooms] = useState("");
     const [lifestyle, setLifestyle] = useState("");
     const [loading, setLoading] = useState(false);
+    const [saving, setSaving] = useState(null);
     const [recommendations, setRecommendations] = useState(null);
     const [error, setError] = useState(null);
+    const [saveMessage, setSaveMessage] = useState(null);
+    const [pendingSave, setPendingSave] = useState(null);
+
+    // Check if user just signed in and has a pending apartment to save
+    useEffect(() => {
+        if (status === "authenticated" && session) {
+            // Check if there's a pending apartment in sessionStorage
+            const pendingApartment = sessionStorage.getItem("pendingApartment");
+            if (pendingApartment) {
+                try {
+                    const apt = JSON.parse(pendingApartment);
+                    // Clear it immediately so it doesn't save twice
+                    sessionStorage.removeItem("pendingApartment");
+                    // Save the apartment
+                    saveApartment(apt);
+                } catch (e) {
+                    console.error("Failed to parse pending apartment:", e);
+                }
+            }
+        }
+    }, [status, session]);
 
     async function handleSubmit(e) {
         e.preventDefault();
         setLoading(true);
         setError(null);
         setRecommendations(null);
+        setSaveMessage(null);
 
         try {
             const response = await fetch("/api/recommend", {
@@ -34,6 +62,52 @@ export default function Recommendations() {
             setError(err.message);
         } finally {
             setLoading(false);
+        }
+    }
+
+    async function saveApartment(apt) {
+        if (!session) {
+            sessionStorage.setItem("pendingApartment", JSON.stringify(apt));
+            sessionStorage.setItem("returnTo", "/recommendations");
+            router.push("/api/auth/signin");
+            return;
+        }
+
+        setSaving(apt.title);
+        setSaveMessage(null);
+
+        try {
+            const response = await fetch("/api/apartments", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title: apt.title,
+                    price: apt.price,
+                    location: apt.location,
+                    bedrooms: apt.bedrooms || 0,
+                    description: apt.description || "",
+                    source: "AI Recommendation",
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Failed to save apartment");
+            }
+
+            setSaveMessage({
+                type: "success",
+                text: `✅ "${apt.title}" saved to your listings!`
+            });
+
+        } catch (err) {
+            setSaveMessage({
+                type: "error",
+                text: `❌ Failed to save: ${err.message}`
+            });
+        } finally {
+            setSaving(null);
         }
     }
 
@@ -125,6 +199,19 @@ export default function Recommendations() {
                 </form>
             </div>
 
+            {/* Save Message */}
+            {saveMessage && (
+                <div className={`max-w-3xl mx-auto mb-6 p-4 rounded-lg text-center ${
+                    saveMessage.type === "success" 
+                        ? "bg-green-900/30 border border-green-700" 
+                        : "bg-red-900/30 border border-red-700"
+                }`}>
+                    <p className={saveMessage.type === "success" ? "text-green-300" : "text-red-300"}>
+                        {saveMessage.text}
+                    </p>
+                </div>
+            )}
+
             {/* Results */}
             {error && (
                 <div className="bg-red-900/30 border border-red-700 rounded-lg p-4 text-center">
@@ -170,16 +257,23 @@ export default function Recommendations() {
                         
                         return (
                             <>
-                                <h2 className="text-2xl font-semibold text-center mb-6">
-                                    🎯 Your Matches ({withinBudget.length} of {recommendations.length} within budget)
-                                </h2>
+                                <div className="flex justify-between items-center">
+                                    <h2 className="text-2xl font-semibold">
+                                        🎯 Your Matches ({withinBudget.length} of {recommendations.length} within budget)
+                                    </h2>
+                                    {!session && (
+                                        <span className="text-xs text-gray-500 bg-gray-800 px-3 py-1 rounded-full">
+                                            Sign in to save apartments
+                                        </span>
+                                    )}
+                                </div>
                                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     {withinBudget.map((apt, index) => (
                                         <div
                                             key={index}
-                                            className="bg-gray-800 rounded-xl overflow-hidden border border-green-500/30 hover:border-green-500 transition"
+                                            className="bg-gray-800 rounded-xl overflow-hidden border border-green-500/30 hover:border-green-500 transition flex flex-col"
                                         >
-                                            <div className="p-5">
+                                            <div className="p-5 flex-1">
                                                 <div className="flex justify-between items-start mb-2">
                                                     <h3 className="text-xl font-semibold text-white">
                                                         {apt.title}
@@ -207,6 +301,21 @@ export default function Recommendations() {
                                                         📊 {apt.neighborhoodInsight}
                                                     </p>
                                                 </div>
+                                            </div>
+                                            <div className="p-4 pt-0">
+                                                <button
+                                                    onClick={() => saveApartment(apt)}
+                                                    disabled={saving === apt.title}
+                                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                                                >
+                                                    {saving === apt.title ? (
+                                                        "Saving..."
+                                                    ) : session ? (
+                                                        "💾 Save to My Listings"
+                                                    ) : (
+                                                        "🔒 Sign in to Save"
+                                                    )}
+                                                </button>
                                             </div>
                                         </div>
                                     ))}

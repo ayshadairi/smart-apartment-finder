@@ -1,5 +1,7 @@
 import { connectToDB } from "@/app/api/db";
 import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth";
 
 export async function GET(request) {
     try {
@@ -32,12 +34,15 @@ export async function GET(request) {
         );
     }
 }
+
 export async function POST(request) {
     try {
         const { db } = await connectToDB();
         const body = await request.json();
         
-        const { title, price, location, bedrooms, description } = body;
+        const { title, price, location, bedrooms, description, source } = body;
+        
+        const session = await getServerSession(authOptions);
         
         // Validation
         const errors = [];
@@ -58,8 +63,15 @@ export async function POST(request) {
             location: location.trim(),
             bedrooms: parseInt(bedrooms) || 0,
             description: description?.trim() || "",
+            source: source || "Manual Entry",
             createdAt: new Date()
         };
+        
+        if (session) {
+            newApartment.userId = session.user.id;
+            newApartment.userName = session.user.name;
+            newApartment.userEmail = session.user.email;
+        }
         
         const result = await db.collection("apartments").insertOne(newApartment);
         
