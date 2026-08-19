@@ -32,23 +32,23 @@ export default function About() {
         <ul className="space-y-3 text-gray-300">
           <li className="flex items-start gap-3">
             <span className="text-green-400">✓</span>
-            <span><span className="font-semibold text-white">Aggregates listings</span> from multiple rental platforms in one place</span>
+            <span><span className="font-semibold text-white">AI-Powered Recommendations</span> — Get personalized apartment matches based on your lifestyle, budget, and preferences</span>
           </li>
           <li className="flex items-start gap-3">
             <span className="text-green-400">✓</span>
-            <span><span className="font-weight-bold text-white">Uses AI</span> to match apartments with your lifestyle preferences</span>
+            <span><span className="font-weight-bold text-white">Interactive Map View</span> — Visualize apartment locations on an interactive map with detailed markers</span>
           </li>
           <li className="flex items-start gap-3">
             <span className="text-green-400">✓</span>
-            <span><span className="font-semibold text-white">Predicts commute times</span> so you know exactly how long it takes to get to work/school</span>
+            <span><span className="font-semibold text-white">AI Description Generator</span> — Landlords can generate professional listing descriptions instantly</span>
           </li>
           <li className="flex items-start gap-3">
             <span className="text-green-400">✓</span>
-            <span><span className="font-semibold text-white">Calculates total cost of living</span> including rent, utilities, internet, and transportation</span>
+            <span><span className="font-semibold text-white">Save & Manage Listings</span> — Save AI-recommended apartments to your account with images and coordinates</span>
           </li>
           <li className="flex items-start gap-3">
             <span className="text-green-400">✓</span>
-            <span><span className="font-semibold text-white">Saves your searches</span> and sends alerts when new matching apartments appear</span>
+            <span><span className="font-semibold text-white">Google OAuth Authentication</span> — Secure sign-in with your Google account</span>
           </li>
         </ul>
       </div>
