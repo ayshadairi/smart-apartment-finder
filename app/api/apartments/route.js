@@ -64,6 +64,8 @@ export async function POST(request) {
             bedrooms: parseInt(bedrooms) || 0,
             description: description?.trim() || "",
             image: image || "",
+            latitude: parseFloat(body.latitude) || null,
+            longitude: parseFloat(body.longitude) || null,
             source: source || "Manual Entry",
             createdAt: new Date()
         };

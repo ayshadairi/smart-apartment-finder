@@ -21,6 +21,8 @@ export default function NewApartment() {
     const [vibe, setVibe] = useState("");
     const [targetAudience, setTargetAudience] = useState("");
     const [generatedTitle, setGeneratedTitle] = useState("");
+    const [latitude, setLatitude] = useState("");
+    const [longitude, setLongitude] = useState("");
 
     async function generateDescription() {
         if (!title || !price || !location) {
@@ -77,6 +79,8 @@ export default function NewApartment() {
         formData.append("bedrooms", bedrooms);
         formData.append("description", description);
         formData.append("image", image);
+        formData.append("latitude", latitude);
+        formData.append("longitude", longitude);
         formData.append("features", keyFeatures.join(", "));
         formData.append("vibe", vibe);
         formData.append("targetAudience", targetAudience);
@@ -92,6 +96,8 @@ export default function NewApartment() {
                     bedrooms: parseInt(bedrooms),
                     description: description || "No description provided",
                     image: image || "",
+                    latitude: parseFloat(latitude) || null,
+                    longitude: parseFloat(longitude) || null,
                 }),
             });
 
@@ -199,7 +205,27 @@ export default function NewApartment() {
                         className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                     />
                 </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Latitude (optional)</label>
+                    <input
+                        type="text"
+                        value={latitude}
+                        onChange={(e) => setLatitude(e.target.value)}
+                        placeholder="e.g., 43.6532"
+                        className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    />
+                </div>
 
+                <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Longitude (optional)</label>
+                    <input
+                        type="text"
+                        value={longitude}
+                        onChange={(e) => setLongitude(e.target.value)}
+                        placeholder="e.g., -79.3832"
+                        className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    />
+                </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Key Features (comma separated)</label>
                     <input

@@ -42,6 +42,8 @@ export async function addApartment(formData) {
         bedrooms: parseInt(formData.get("bedrooms")) || 0,
         description: formData.get("description"),
         image: formData.get("image") || "",
+        latitude: parseFloat(formData.get("latitude")) || null,
+        longitude: parseFloat(formData.get("longitude")) || null,
         userId: session.user.id,
         userName: session.user.name,
         userEmail: session.user.email,
@@ -80,6 +82,8 @@ export async function updateApartment(id, formData) {
         bedrooms: parseInt(formData.get("bedrooms")) || 0,
         description: formData.get("description"),
         image: formData.get("image") || "",
+        latitude: parseFloat(formData.get("latitude")) || null,
+        longitude: parseFloat(formData.get("longitude")) || null,
         updatedAt: new Date()
     };
     

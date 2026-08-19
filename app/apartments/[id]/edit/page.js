@@ -70,7 +70,27 @@ export default async function EditApartment({ params }) {
                         className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                     />
                 </div>
-                
+                <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Latitude</label>
+                    <input
+                        type="text"
+                        name="latitude"
+                        defaultValue={apartment.latitude || ""}
+                        placeholder="e.g., 43.6532"
+                        className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Longitude</label>
+                    <input
+                        type="text"
+                        name="longitude"
+                        defaultValue={apartment.longitude || ""}
+                        placeholder="e.g., -79.3832"
+                        className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    />
+                </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1">Description</label>
                     <textarea
