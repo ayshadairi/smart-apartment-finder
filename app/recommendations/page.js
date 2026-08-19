@@ -274,6 +274,24 @@ export default function Recommendations() {
                                             className="bg-gray-800 rounded-xl overflow-hidden border border-green-500/30 hover:border-green-500 transition flex flex-col"
                                         >
                                             <div className="p-5 flex-1">
+                                                {/* Image */}
+                                                {apt.image && (
+                                                    <img 
+                                                        src={apt.image} 
+                                                        alt={apt.title}
+                                                        className="w-full h-48 object-cover rounded-lg mb-3"
+                                                        onError={(e) => {
+                                                            e.target.style.display = 'none';
+                                                            e.target.nextElementSibling?.style.display === 'flex';
+                                                        }}
+                                                    />
+                                                )}
+                                                {!apt.image && (
+                                                    <div className="w-full h-48 bg-gray-700 rounded-lg mb-3 flex items-center justify-center">
+                                                        <span className="text-gray-500 text-sm">📷 No Image</span>
+                                                    </div>
+                                                )}
+                                                
                                                 <div className="flex justify-between items-start mb-2">
                                                     <h3 className="text-xl font-semibold text-white">
                                                         {apt.title}
