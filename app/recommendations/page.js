@@ -18,17 +18,14 @@ export default function Recommendations() {
     const [saveMessage, setSaveMessage] = useState(null);
     const [pendingSave, setPendingSave] = useState(null);
 
-    // Check if user just signed in and has a pending apartment to save
+    
     useEffect(() => {
         if (status === "authenticated" && session) {
-            // Check if there's a pending apartment in sessionStorage
             const pendingApartment = sessionStorage.getItem("pendingApartment");
             if (pendingApartment) {
                 try {
                     const apt = JSON.parse(pendingApartment);
-                    // Clear it immediately so it doesn't save twice
                     sessionStorage.removeItem("pendingApartment");
-                    // Save the apartment
                     saveApartment(apt);
                 } catch (e) {
                     console.error("Failed to parse pending apartment:", e);
@@ -86,6 +83,9 @@ export default function Recommendations() {
                     location: apt.location,
                     bedrooms: apt.bedrooms || 0,
                     description: apt.description || "",
+                    image: apt.image || "",
+                    latitude: apt.latitude || null,
+                    longitude: apt.longitude || null,
                     source: "AI Recommendation",
                 }),
             });
@@ -291,6 +291,12 @@ export default function Recommendations() {
                                                 <p className="text-gray-300 text-sm mb-3">
                                                     {apt.description}
                                                 </p>
+                                                {/* Show coordinates if available */}
+                                                {apt.latitude && apt.longitude && (
+                                                    <p className="text-gray-500 text-xs mb-3">
+                                                        📌 {apt.latitude}, {apt.longitude}
+                                                    </p>
+                                                )}
                                                 <div className="bg-blue-600/20 border border-blue-500/30 rounded-lg p-3 mb-3">
                                                     <p className="text-blue-300 text-sm font-medium">
                                                         💡 {apt.reason}
