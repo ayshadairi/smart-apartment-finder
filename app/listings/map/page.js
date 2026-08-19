@@ -3,7 +3,16 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import MapView from "@/app/components/MapView";
+import dynamic from "next/dynamic";
+
+const MapView = dynamic(() => import("@/app/components/MapView"), {
+    ssr: false,
+    loading: () => (
+        <div className="w-full h-[500px] rounded-xl border border-gray-700 bg-gray-800 flex items-center justify-center">
+            <div className="text-gray-400">Loading map...</div>
+        </div>
+    ),
+});
 
 export default function MapPage() {
     const { data: session, status } = useSession();
@@ -17,6 +26,7 @@ export default function MapPage() {
             router.push("/api/auth/signin");
         }
     }, [status, router]);
+
     useEffect(() => {
         async function fetchApartments() {
             try {
@@ -55,7 +65,6 @@ export default function MapPage() {
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <div>
                     <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
@@ -73,10 +82,8 @@ export default function MapPage() {
                 </Link>
             </div>
 
-            {/* Map */}
             <MapView apartments={apartments} onMarkerClick={handleMarkerClick} />
 
-            {/* Selected Apartment Details */}
             {selectedApartment && (
                 <div id="apartment-details" className="mt-6 bg-gray-800 rounded-xl p-6 border border-gray-700">
                     <div className="flex justify-between items-start">
@@ -99,7 +106,6 @@ export default function MapPage() {
                 </div>
             )}
 
-            {/* No apartments message */}
             {apartments.length === 0 && (
                 <div className="mt-6 bg-yellow-900/30 border border-yellow-700 rounded-lg p-6 text-center">
                     <p className="text-yellow-300 text-lg">No apartments with locations found</p>
