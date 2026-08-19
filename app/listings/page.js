@@ -37,13 +37,22 @@ export default async function Listings() {
                     <p className="text-gray-400 mt-1">Manage your apartment listings</p>
                 </div>
                 
-                <Link 
-                    href="/apartments/new" 
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition shadow-lg shadow-blue-500/25 hover:scale-105 transform inline-flex items-center gap-2 whitespace-nowrap"
-                >
-                    <span className="text-xl leading-none">+</span> 
-                    <span>Add Apartment</span>
-                </Link>
+                <div className="flex gap-3">
+                    <Link 
+                        href="/apartments/new" 
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition shadow-lg shadow-blue-500/25 hover:scale-105 transform inline-flex items-center gap-2 whitespace-nowrap"
+                    >
+                        <span className="text-xl leading-none">+</span> 
+                        <span>Add Apartment</span>
+                    </Link>
+                    <Link 
+                        href="/listings/map" 
+                        className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition shadow-lg shadow-green-500/25 hover:scale-105 transform inline-flex items-center gap-2 whitespace-nowrap"
+                    >
+                        <span className="text-xl leading-none">🗺️</span> 
+                        <span>View on Map</span>
+                    </Link>
+                </div>
             </div>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
