@@ -59,10 +59,10 @@ export default function Home() {
               <p className="text-gray-400">Get personalized recommendations based on your lifestyle, budget, and must-haves</p>
             </div>
             <div className="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition group">
-              <div className="text-5xl mb-4 group-hover:scale-110 transition">⏱️</div>
-              <h3 className="text-xl font-semibold mb-2">Smart Commute Predictions</h3>
-              <p className="text-gray-400">Real-time traffic analysis shows you exactly how long your commute will be</p>
-            </div>
+              <div className="text-5xl mb-4 group-hover:scale-110 transition">🗺️</div>
+              <h3 className="text-xl font-semibold mb-2">Interactive Map View</h3>
+              <p className="text-gray-400">See all your apartment listings on an interactive map with location markers</p>
+          </div>
             <div className="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition group">
               <div className="text-5xl mb-4 group-hover:scale-110 transition">💰</div>
               <h3 className="text-xl font-semibold mb-2">Total Cost Calculator</h3>
