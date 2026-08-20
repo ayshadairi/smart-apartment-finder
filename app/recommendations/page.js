@@ -1,9 +1,17 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Recommendations() {
+    return (
+        <Suspense fallback={<div className="text-center py-12 text-gray-400">Loading...</div>}>
+            <RecommendationsContent />
+        </Suspense>
+    );
+}
+
+function RecommendationsContent() {
     const { data: session, status } = useSession();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -282,7 +290,6 @@ export default function Recommendations() {
                                                         className="w-full h-48 object-cover rounded-lg mb-3"
                                                         onError={(e) => {
                                                             e.target.style.display = 'none';
-                                                            e.target.nextElementSibling?.style.display === 'flex';
                                                         }}
                                                     />
                                                 )}
